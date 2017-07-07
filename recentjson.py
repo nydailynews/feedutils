@@ -24,6 +24,7 @@ class RecentJson:
         if not hasattr(self.args, 'days'):
             self.args.days = 0
         self.days = self.args.days
+        self.date_format = '%a, %d %b %Y %X'
 
     def get(self, url):
         """ Wrapper for API requests. Take a URL, return a json array.
@@ -50,6 +51,7 @@ class RecentJson:
         try:
             p = json.loads(self.xml)
         except:
+            # Sometimes we download gzipped documents from the web.
             fh = open('json.gz', 'wb')
             fh.write(self.xml)
             fh.close()
@@ -64,10 +66,10 @@ class RecentJson:
         for item in self.p:
             # print item.keys()
             # [u'body', u'tags', u'url', u'contentId', u'abstract', u'author', u'lastUpdated', u'mobileTitle', u'mobileUrl', u'publish_date', u'images', u'title', u'type', u'categories']
-            #print item['publish_date']
+            # print item['publish_date']
             # Fri, 7 Jul 2017 15:16:38 -0400
             #dt = datetime.strptime(item['publish_date'], '%a, %d %b %Y %X %z')
-            dt = datetime.strptime(' '.join(item['publish_date'].split(' ')[:5]), '%a, %d %b %Y %X')
+            dt = datetime.strptime(' '.join(item['publish_date'].split(' ')[:5]), self.date_format)
             delta = datetime.today() - dt
 
             if delta.days > int(self.days):
