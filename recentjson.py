@@ -137,7 +137,7 @@ def main(args):
                 ago = datetime.now() - dt
                 # print ago
                 # 2 days, 15:57:48.578638
-                print '<li><a href="{0}">{1}</a> <span>(published {2})</span></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
+                print '<a href="{0}">{1}</a> <span>(published {2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
             elif args.output == 'json':
                 print json.dumps({'title': article['title'],
                     'id': article['id'],
