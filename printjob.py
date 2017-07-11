@@ -9,10 +9,23 @@ class Format():
     """ Manage the way we're outputting this stuff.
         """
 
-    def __init__():
+    def __init__(self):
         """
             """
         pass
+
+    def formats(self, **kwargs):
+        """
+            """
+        #'<li><a href="{0}">{1}</a> <span>(published {2})</span></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
+        pass
+
+    def add_timeago(self, **kwargs):
+        """
+            """
+        #'<span>(published {2})</span>'
+        pass
+
 
 class JobConfig():
     """ Streamline creating new print jobs.
