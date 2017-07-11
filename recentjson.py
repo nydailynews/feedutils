@@ -127,7 +127,7 @@ def main(args):
             articles.append(rj.recently())
 
         for i, article in enumerate(articles[0]):
-            if i > args.limit and args.limit > 0:
+            if i >= args.limit and args.limit > 0:
                 break 
 
             if args.output == 'html':
