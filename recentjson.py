@@ -130,14 +130,18 @@ def main(args):
             if i >= args.limit and args.limit > 0:
                 break 
 
+            dt = datetime.strptime(' '.join(article['publish_date'].split(' ')[:5]), '%a, %d %b %Y %X')
+            ago = datetime.now() - dt
+            # print ago
+            # 2 days, 15:57:48.578638
             if args.output == 'html':
                 if type(article['title']) is types.UnicodeType:
                     article['title'] = article['title'].encode('utf-8', 'replace')
-                dt = datetime.strptime(' '.join(article['publish_date'].split(' ')[:5]), '%a, %d %b %Y %X')
-                ago = datetime.now() - dt
-                # print ago
-                # 2 days, 15:57:48.578638
                 print '<a href="{0}">{1}</a> <span>(published {2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
+            if args.output == 'js':
+                if type(article['title']) is types.UnicodeType:
+                    article['title'] = article['title'].encode('utf-8', 'replace')
+                print 'var hed = "<a href="{0}">{1}</a> <span>(published {2})</span>";'.format(article['url'], article['title'].replace('"', '\\"'), pretty_date(ago).lower())
             elif args.output == 'json':
                 print json.dumps({'title': article['title'],
                     'id': article['id'],
