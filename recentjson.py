@@ -141,7 +141,7 @@ def main(args):
             if args.output == 'js':
                 if type(article['title']) is types.UnicodeType:
                     article['title'] = article['title'].encode('utf-8', 'replace')
-                print 'var hed = "<a href="{0}">{1}</a> <span>(published {2})</span>";'.format(article['url'], article['title'].replace('"', '\\"'), pretty_date(ago).lower())
+                print 'var hed = "<a href=\'{0}\'>{1}</a> <span>(published {2})</span>";'.format(article['url'], article['title'].replace('"', '\\\\"'), pretty_date(ago).lower())
             elif args.output == 'json':
                 print json.dumps({'title': article['title'],
                     'id': article['id'],
