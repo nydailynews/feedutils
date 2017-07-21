@@ -137,7 +137,10 @@ def main(args):
             if args.output == 'html':
                 if type(article['title']) is types.UnicodeType:
                     article['title'] = article['title'].encode('utf-8', 'replace')
-                print '<a href="{0}">{1}</a> <span>(published {2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
+                if args.listitem == True:
+                    print '<li><a href="{0}">{1}</a> <span>(published {2})</span></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
+                else:
+                    print '<a href="{0}">{1}</a> <span>(published {2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
             if args.output == 'js':
                 if type(article['title']) is types.UnicodeType:
                     article['title'] = article['title'].encode('utf-8', 'replace')
@@ -174,6 +177,7 @@ def build_parser():
     parser.add_argument("-d", "--days", dest="days", default=0)
     parser.add_argument("-l", "--limit", dest="limit", default=0, type=int)
     parser.add_argument("-o", "--output", dest="output", default="html", type=str)
+    parser.add_argument("--li", dest="listitem", default=False, action="store_true")
     parser.add_argument("urls", action="append", nargs="*")
     return parser
 
