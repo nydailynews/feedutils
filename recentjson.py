@@ -57,9 +57,9 @@ class RecentJson:
             fh.close()
             try:
                 gz = gzip.GzipFile('json.gz', 'r').read()
+                p = json.loads(gzip.GzipFile('json.gz', 'r').read())
             except IOError:
-                return false
-            p = json.loads(gzip.GzipFile('json.gz', 'r').read())
+                return None
         self.p = p
         return p
 
@@ -127,10 +127,16 @@ def main(args):
             if args.verbose:
                 print arg
             rj.get(arg)
-            if not rj.parse():
+            try:
+                p = rj.parse()
+            except:
+                continue
+            if not p:
                 continue
             articles.append(rj.recently())
 
+        if len(articles) is 0:
+            return None
         for i, article in enumerate(articles[0]):
             if i >= args.limit and args.limit > 0:
                 break 
