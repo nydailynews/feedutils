@@ -13,10 +13,10 @@ from time import mktime
 
 class RecentJson:
     """ Methods for ingesting and publishing JSON feeds.
-        >>> rj = RecentJson()
-        >>> rj.get('')
-        True
-        >>> rj.parse()
+        >>> url = 'http://www.nydailynews.com/json/cmlink/aaron-judge-1.3306628'
+        >>> parser = build_parser()
+        >>> args = parser.parse_args([url])
+        >>> rj = RecentJson(args)
         """
 
     def __init__(self, args={}):
@@ -34,8 +34,6 @@ class RecentJson:
             >>> rj = RecentJson(args)
             >>> rj.get(url)
             True
-            >>> rj.parse()
-            #>>> articles = rj.recently()
             """
         response = urllib2.urlopen(url)
         if int(response.code) >= 400:
@@ -47,6 +45,15 @@ class RecentJson:
 
     def parse(self):
         """ Turn the xml into an object.
+            >>> url = 'http://www.nydailynews.com/json/cmlink/aaron-judge-1.3306628'
+            >>> parser = build_parser()
+            >>> args = parser.parse_args([url])
+            >>> rj = RecentJson(args)
+            >>> rj.get(url)
+            True
+            >>> xml = rj.parse()
+            >>> print len(xml)
+            50
             """
         try:
             p = json.loads(self.xml)
@@ -61,6 +68,14 @@ class RecentJson:
 
     def recently(self):
         """ Return a feedparser entry object for the last X days of feed entries.
+            >>> url = 'http://www.nydailynews.com/json/cmlink/aaron-judge-1.3306628'
+            >>> parser = build_parser()
+            >>> args = parser.parse_args([url])
+            >>> rj = RecentJson(args)
+            >>> rj.get(url)
+            True
+            >>> xml = rj.parse()
+            >>> articles = rj.recently()
             """
         items = []
         for item in self.p:
@@ -174,6 +189,7 @@ def build_parser():
                                                   Returns the items published today unless otherwise specified.''',
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true")
+    parser.add_argument("--test", dest="test", default=False, action="store_true")
     parser.add_argument("-d", "--days", dest="days", default=0)
     parser.add_argument("-l", "--limit", dest="limit", default=0, type=int)
     parser.add_argument("-o", "--output", dest="output", default="html", type=str)
@@ -187,7 +203,7 @@ if __name__ == '__main__':
     parser = build_parser()
     args = parser.parse_args()
 
-    if args.verbose:
+    if args.test:
         doctest.testmod(verbose=args.verbose)
 
     main(args)
