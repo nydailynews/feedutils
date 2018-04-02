@@ -171,6 +171,8 @@ def main(args):
                     article['title'] = article['title'].encode('utf-8', 'replace')
                 if args.listitem == True:
                     print '<li><a href="{0}">{1}</a> <span>({2})</span></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
+                elif args.nostamp == True:
+                    print '<li><a href="{0}">{1}</a></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
                 else:
                     print '<a href="{0}">{1}</a> <span>({2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
             if args.output == 'js':
@@ -211,6 +213,7 @@ def build_parser():
     parser.add_argument("-l", "--limit", dest="limit", default=0, type=int)
     parser.add_argument("-o", "--output", dest="output", default="html", type=str)
     parser.add_argument("--li", dest="listitem", default=False, action="store_true")
+    parser.add_argument("--ns", dest="nostamp", default=False, action="store_true")
     parser.add_argument("urls", action="append", nargs="*")
     return parser
 
