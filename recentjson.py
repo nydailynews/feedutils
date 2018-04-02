@@ -127,9 +127,15 @@ def pretty_date(ago):
     if day_diff < 7:
         return str(day_diff) + " days ago"
     if day_diff < 31:
+        if day_diff / 7 == 1:
+            return str(day_diff / 7) + " week ago"
         return str(day_diff / 7) + " weeks ago"
     if day_diff < 365:
+        if day_diff / 30 == 1:
+            return str(day_diff / 30) + " month ago"
         return str(day_diff / 30) + " months ago"
+    if day_diff / 365 == 1:
+        return str(day_diff / 365) + " year ago"
     return str(day_diff / 365) + " years ago"
 
 def main(args):
@@ -164,13 +170,13 @@ def main(args):
                 if type(article['title']) is types.UnicodeType:
                     article['title'] = article['title'].encode('utf-8', 'replace')
                 if args.listitem == True:
-                    print '<li><a href="{0}">{1}</a> <span>(published {2})</span></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
+                    print '<li><a href="{0}">{1}</a> <span>({2})</span></li>'.format(article['url'], article['title'], pretty_date(ago).lower())
                 else:
-                    print '<a href="{0}">{1}</a> <span>(published {2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
+                    print '<a href="{0}">{1}</a> <span>({2})</span>'.format(article['url'], article['title'], pretty_date(ago).lower())
             if args.output == 'js':
                 if type(article['title']) is types.UnicodeType:
                     article['title'] = article['title'].encode('utf-8', 'replace')
-                print 'var hed = "<a href=\'{0}\'>{1}</a> <span>(published {2})</span>";'.format(article['url'], article['title'].replace('"', '\\\\"'), pretty_date(ago).lower())
+                print 'var hed = "<a href=\'{0}\'>{1}</a> <span>({2})</span>";'.format(article['url'], article['title'].replace('"', '\\\\"'), pretty_date(ago).lower())
             elif args.output == 'json':
                 print json.dumps({'title': article['title'],
                     'id': article['id'],
